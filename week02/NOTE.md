@@ -163,7 +163,8 @@ AddExp:
     * Library
 
 
-## 语法-语义-运行时
+## 八、学习流程
+* 语法-语义-运行时
 
 ## 答疑
     Q:2**2**3=256
@@ -226,9 +227,9 @@ AddExp:
 * Type
     * Number
         * IEEE754 Double Float
-            Sign(1) 表示征服
-            Exponent(11)
-            Fraction(52) 分数
+            * Sign(1) 表示征服
+            * Exponent(11)
+            * Fraction(52) 分数
         * Grammer
             * DecimalLiteral 十进制
                 * 0
@@ -241,34 +242,35 @@ AddExp:
                 * 0o11 - 9
             * HexIntegerLiteral 十六进制
                 * 0x256
-        parseInt('100',2)  //4 二进制
-        parseInt('100',8)  //8 八进制
-        parseInt('100',10) //100 十进制
-        小于精度 认为相等
-        Math.abs(0.1+0.2-0.3)<Number.EPSILON 
+            * 例子
+                * parseInt('100',2)  //4 二进制
+                * parseInt('100',8)  //8 八进制
+                * parseInt('100',10) //100 十进制
+                * Math.abs(0.1+0.2-0.3) < Number.EPSILON  //小于精度 认为相等
 
     * String
-        Charater
-        Code Point
-        Encoding
-            ASCII (推荐)
-            Unicode
-            UCS U+0000 - U+FFFF JavaScript
-            GB (兼容ASCII) 国标
-                GB2312 
-                GBK(GB13009) 
-                GB18030
-            ISO-8859 欧洲国家标准
-            BIG5 繁体中文和ascii
-            UTF UTF8（比特位做成了控制位） UTF16（适合存中文）
-        Grammer
-            "abc"
-            'abc'
-            `abc` template
-        "\t" //"	"
-        "\n" //line feed <LF>
-        "\r" //carriage return <CR>
-        "\\" // \
+        * Charater
+        * Code Point
+        * Encoding
+            * ASCII (推荐)
+            * Unicode
+            * UCS U+0000 - U+FFFF JavaScript
+            * GB (兼容ASCII) 国标
+                * GB2312 
+                * GBK(GB13009) 
+                * GB18030
+            * ISO-8859 欧洲国家标准
+            * BIG5 繁体中文和ascii
+            * UTF UTF8（比特位做成了控制位） UTF16（适合存中文）
+        * Grammer
+            * "abc"
+            * 'abc'
+            * `abc` template
+        * 例子
+            * "\t" //"	"
+            * "\n" //line feed <LF>
+            * "\r" //carriage return <CR>
+            * "\\" // \
     * Boolean true|false
     * Null
     * Undefined
