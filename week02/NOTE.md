@@ -214,14 +214,14 @@ AddExp:
         * //
         * /* */
     * CommentToken 记号、词、令牌等一切有效的东西，无效的是👆上面三种
-        * Punctuator 符号
+        * Punctuator 符号 {()[]....;,<><=>===!====!==+-*%**++--<<>>>>>&|^!~
+                        &||?:=+=-=*=%=**=<<=>>=>>>=&=|=^==>
         * IdentifierName
             * Identifier 标识符：变量名、属性
             * Keywords 关键字（有些keyword可以当变量名 如var undifend=123;）
             * Future reserved Keywords:enum
-        * Literal 直接量
-            * NumericLiteral
-            * StringLiteral
+        * NumericLiteral 数字直接量
+        * StringLiteral 字符直接量
         * Template
 
 * Type
