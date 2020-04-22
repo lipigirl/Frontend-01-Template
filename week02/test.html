@@ -6,8 +6,8 @@
     const intarr = new Uint8Array(8);
     const memory = new Float64Array(intarr.buffer);
 
-    intarr[0]=0b000001000
-    intarr[1]=0b000000000
+    intarr[0] = 0b000001000
+    intarr[1] = 0b000000000
 
     // for (let i = 0; i < 8; i++) {
     //     // console.log(intArr[i].toString(2))
@@ -16,5 +16,16 @@
     //     console.log(new Array(9 - s.length).join("0") + s)
 
     // }
+
+
+    function fn(str) {
+        str = str.trim();
+        let arr = [];
+        for (let i = 0; i < str.length; i++) {
+            if (str[i])
+                arr.push('\\u' + str[i].charCodeAt().toString(16))
+        }
+        return arr.join('');
+    }
 
 </script>

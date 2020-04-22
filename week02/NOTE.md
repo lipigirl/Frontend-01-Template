@@ -267,10 +267,10 @@ AddExp:
             * 'abc'
             * `abc` template
         * 例子
-            * "\t" //"	"
-            * "\n" //line feed <LF>
-            * "\r" //carriage return <CR>
-            * "\\" // \
+            * "\t"  //"	"
+            * "\n"  //line feed <LF>
+            * "\r"  //carriage return <CR>
+            * "\\"  // \
     * Boolean true|false
     * Null
     * Undefined
