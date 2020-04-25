@@ -1,0 +1,163 @@
+<script>
+    // {
+    //     const a = 1;
+    //     throw 1;
+    //     let b = 2;
+    //     b = foo();
+    // }
+
+    // while(true){
+    //     console.log(1)
+    //     // break;停止循环
+    //     // continue; 不停止循环
+    // }
+
+    // for (let i = 0; i < 10; i++) {
+    //     console.log(i);
+    // }
+    // for本身会产生一个作用域，在block{}之外，作用于整个循环
+
+    // let i = 0;
+    // {
+    //     let i = 10;
+    //     console.log(i);
+    // }
+    // console.log(i);
+
+    // for (var i = 0; i < 10; i++) {
+    //     console.log(i);
+    // }
+    // //0-9
+    // for (i = 0; i < 10; i++) {
+    //     var i;
+    //     console.log(i);
+    // }
+    // //0-9
+    // function fn() {
+    //     for (i = 0; i < 10; i++) {
+    //         console.log(i);
+    //     }
+    // }
+    // var i;
+    // // 报错
+
+    // for ... in
+    for (let key in { a: 1, b: 2 }) {
+        console.log(key)
+    }
+
+    // for ... of 
+    for (let value of [1, 2, 3, 4, 5]) {
+        console.log(value);
+    }
+
+    // of的对象是迭代Iterater 44:44
+    function *gen() {
+        yield 1;
+        yield 2;
+        yield 3;
+    }
+
+    for (let value of gen()) {
+        console.log(value)
+    }
+
+    // public、private是标签，没什么用
+    // function Class() {
+    //     public: this.a = 1;
+    //     this.b = 2;
+    //     private: var x = 3;
+    //     var y = 4;
+    // }
+
+    var e = 2;
+    try {
+        throw 1;
+    }
+    catch (e) {
+        console.log(e)
+    }
+    // 1；
+
+    // class{}//error
+    // void class{}
+
+    // 隔1s加1
+    let i = 0;
+    tick = () => {
+        console.log(i++);
+        // setTimeout(tick, 1000)
+    }
+
+    // 异步函数
+    void async function () {
+        console.log(1);
+    }()
+
+    // 异步
+    function sleep(d) {
+        return new Promise(resolve => setTimeout(resolve, d));
+    }
+    void async function () {
+        var i = 0;
+        while (true) {
+            console.log(i++);
+            await sleep(1000);
+        }
+    }()
+
+    // 异步generator ===1:38
+    function sleep(d) {
+        return new Promise(resolve => setTimeout(resolve, d));
+    }
+    async function* foo() {
+        var i = 0;
+        while (true) {
+            yield i++;
+            await sleep(1000);
+        }
+    }
+    void async function () {
+        var g = foo();
+        console.log(g.next());
+        console.log(g.next());
+        console.log(g.next());
+    }()
+
+    // with
+    var x = 0;
+    function foo() {
+        var o = { x: 1 }
+        x = 2;
+        with (o) {
+            var x = 3;
+        }
+        console.log(x);//2
+        console.log(o);//{x:3}
+    }
+    foo();
+    console.log(x);//0
+
+    // var最好写在函数内最前面或变量第一次出现的地方
+    var x = 0;
+    function foo() {
+        var o = { x: 1 }
+        x = 2;
+        with (o) {
+            let x = 3;
+        }
+        console.log(x);//2
+        console.log(o);//{x:1}
+    }
+    foo();
+    console.log(x);//0
+
+    // 
+    var cls1 = 0;
+    function foo() {
+        class cls1 { }
+        // class cls1 { }
+        // const cls1;
+    }
+    foo();//Uncaught SyntaxError: Identifier 'cls1' has already been declared
+</script>

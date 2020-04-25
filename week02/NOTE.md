@@ -142,7 +142,7 @@ AddExp:
 ## 七、一般命令式编程语言
 * Atom 原子 变量名
     * Identifer 标识符
-    * Literal
+    * Literal 直接量
 * Expression 表达式 由原子和操作符组成
     * Atom
     * Operator
