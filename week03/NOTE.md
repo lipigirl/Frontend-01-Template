@@ -1,77 +1,89 @@
 # 每周总结可以写在这里
 
-Infinity?
-Array(65)
-精度问题 浮点丢失
+Infinity= Number.POSITIVE_INFINITY 用于存放表示正无穷大的数值。(1/0;//Infinity)
+Uint8Array 数组类型表示一个8位无符号整型数组，创建时内容被初始化为0。
+Float64Array? 类型数组代表的是平台字节顺序为64位的浮点数型数组。
+Encoding?
 arguments?
-~a?
+IEEE 754 ?
+Object.prototype? 属性表示 Object 的原型对象。
 
 ## Expression js表达式
-* Grammer 运算符优先级 根据表达式生成树
-    1+2*3
-        +
-    1      *
-        2    3
-* Expressions
-    * Member运算符  访问属性成员 
-        * ECMA12.3章
-        * a.b
-        * a[b]
-        * foo`string`
-        * super.b构造函数
-        * super['b']构造函数
-        * new target 只能在函数里用
-        * 例子
-            class Parent{
-                constructor(){
-                    this.a=1;
-                }
-            }
-            class Child extends Parent{
-                constructor(){
-                super();
-                this.b=2;
-                }
-            }
-            new Child(); //Child {a: 1, b: 2}
+* Grammer 
+    * 运算符优先级 根据表达式生成树
+        1+2*3 =>
+            +
+        1      *
+            2    3
 
-            function f1(s){console.log('f1',s)}
-            function f2(s){console.log('f2',s);return f1;}
-            ===52fen=== 
+* MemberExpression=访问属性成员 
+    * ECMA12.3章
+    * a.b
+    * a[b]
+    * foo`string`
+    * super.b构造函数
+    * super['b']构造函数
+    * new target 只能在函数里用
+    * new Foo()
 
-    * New运算符
-    * Call
+* NewExpression
+    * new a()();
+    * new new a();
 
-* Reference
-    * Object
-    * Key
+* CallExpression=函数调用
+    * foo()
+    * super()
+    * foo()['b']
+    * foo().b
+    * foo()`abx`
 
-    * delete
-    * assign
 * Update Expression
+    * a++
+    * a--
+    * --a
+    * ++a
 
-* Unary
+* Unary=单目运算符
     * delete a.b
-    * void fn()
-        for(let i=0;i<10;i++){
-            let button=document.createElement('button');
-            document.body.appendChild(button);
-            button.innerHTML=i;
-            void function(i){
-                button.onClick=function(){
-                    console.log(i)
-                }
-            }(i)
-        }
-    * ~a
+    * void foo()=undefined
+    * typeof a
+    * +a
+    * -a
+    * ~a 按位取反
     * !a 
     * await a
-&& || 不做类型转换
-* Multipilicative * / %
-js中的三目运算=短路运算
-Number类型加法 String类型加法
 
-String Number Boolean强制类型转换
+* Exponental 指数
+    ** 右结合
+
+* Multipilicative 
+    / % *
+
+* Additive
+    -+ 
+
+* Shift 移位运算 左右移位
+    <<>> >>>
+
+* Relationship
+    < > <= >= instanceof in
+
+* Equality
+    ==
+    !=
+    ===
+    !==
+
+* Bitwise 位运算
+    & ^ |
+
+* Logical 逻辑运算
+    &&
+    ||
+    && || 不做类型转换
+
+* Conditional 三目运算符
+    ? :
 
 
 * Completion Record
@@ -99,8 +111,8 @@ String Number Boolean强制类型转换
         * while(){}
         * do{} while()
         * for(..;..;..){}
-        * for(.. in ..){}
-        * for(.. of ..){}
+        * for(.. in Object){}
+        * for(.. of Array){}
         * 循环、switch可以带标签
     
     作用域：源代码文本的范围 变量能作用的范围
@@ -118,37 +130,37 @@ String Number Boolean强制类型转换
     * 封装 继承 多态
 
     * Class类 描述对象的方式
-        * 归类
+        * 归类 C++
         * 分类
     * Prototype原型 不做严谨的分类，而是采用“相似”这样的方式描述对象
    
     * 设计对象的状态和行为时，遵循“行为改变状态”的原则。（面向对象实现与设计 书）
 
-    * Object in JavaScript
+    * Object in JavaScript（运行时机制中看）
         * 原型
-            * Symbol
-            * String
-        * 属性：属性都属于运行时
-            * 数据型 Data 描述状态
-                * Data Property
-                    * value
-                    * writable
-                    * enumerable 是否可枚举
-                    * configurable 是否可改变属性
-            * 访问器型 Accessor 描述行为
-                * Accessor Property
-                    * get
-                    * set
-                    * enumerable
-                    * configurable
+        * 属性（属性都属于运行时）（属性是key-value对）
+            * key
+                * Symbol
+                * String
+            * 数据型 Data （用来存储函数、描述状态）
+                * value
+                * writable
+                * enumerable 是否可枚举
+                * configurable writable、enumerable、configurable是否可以被改变（configurable一旦设为false，不能再设为true）
+            * 访问器型 Accessor （描述行为）
+                * get函数
+                * set函数
+                * enumerable
+                * configurable
+        * 当我们访问属性时，如果当前对象没有这个属性，则会沿着原型往上找，找到原型为null的对象，原型链由此而来。
     
     * Object API
-        * {} Object.defineProperty
-        * Object.create / Object.setPropertyOf / Object.getPropertyOf
-        * new / class /extends
-        * new / function /property
+        * Object.defineProperty 对象定义新属性或修改现有属性
+            * 例子：let obj={};Object.defineProperty(obj,'name',{value:'pig',writable:false});
+        * Object.create（创建一个新对象） / Object.setPropertyOf / Object.getPropertyOf
+        * new / class / extends
+        * new / function / property（废弃）
     * Function Object  
-        * Call行为=function 能call就是function
-        * constructor=构造器
-        
+        * 行为Call=function 能call就是function
+        * constructor 有constructor就是构造器
         * class用new function不用new

@@ -1,0 +1,9 @@
+JavaScript 标准里所有的对象:
+1.Function Object
+2.Array Object
+3.String Object
+4.Boolean Object
+5.Number Object
+6.Date Object
+7.RegExp Object
+8.Error Object
