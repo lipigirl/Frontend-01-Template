@@ -1,6 +1,6 @@
 function match(string) {
     let state = start;
-    for (let item of string) {
+    for (let item of string) {//for of 适用于数组、字符串
         state = state(item);
     }
     return state == end;
