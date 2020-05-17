@@ -61,14 +61,12 @@ ${this.bodyText}`
                 const parser = new ResponseParser();
                 parser.receive(data.toString());//request内容
                 if (parser.isFinished) {
-                    console.log('*********response start*********');
-                    console.log(parser.response);
-                    console.log('*********response end*********');
+                    resolve(parser.response);
                 }
                 connection.end();
             });
             connection.on('error', err => {
-                console.log(err);
+                reject(err);
                 connection.end();
             });
             connection.on('end', () => {
@@ -277,5 +275,7 @@ void async function () {
             name: "hhj"
         }
     })
-    await request.send();
+    let resposne = await request.send();
+    let dom = parser.parseHTML(resposne.body);
+    console.log(dom);
 }();
