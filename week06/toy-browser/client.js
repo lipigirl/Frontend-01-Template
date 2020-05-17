@@ -1,4 +1,5 @@
 const net = require("net");
+const parser = require('./parser.js');
 
 class Request {
     /**
@@ -45,11 +46,9 @@ ${this.bodyText}`
     send(connection) {
         return new Promise((resolve, reject) => {
             if (connection) {
-                console.log('send1');
                 connection.write(this.toString());
             }
             else {
-                console.log('send2');
                 connection = net.createConnection({
                     host: this.host,
                     port: this.port,
@@ -265,7 +264,6 @@ class ChunkedBodyParser {
     }
 }
 
-// 改良版-发送一个请求
 void async function () {
     let request = new Request({
         method: "POST",
@@ -279,42 +277,5 @@ void async function () {
             name: "hhj"
         }
     })
-    console.log('*********request start*********');
-    console.log(request);
-    console.log('*********request end*********');
     await request.send();
 }();
-
-// 简单版-发送一个请求
-/* const client = net.createConnection({ port: 8088, }, () => {
-    console.log('********connected to server!********');
-    let request = new Request({
-        method: "POST",
-        host: "127.0.0.1",
-        port: "8088",
-        path: "/",
-        headers: {
-            ["X-Foo2"]: "customed"
-        },
-        body: {
-            name: "hhj"
-        }
-    })
-    client.write(request.toString());
-    console.log(request.toString());
-});
-client.on('data', (data) => {
-    console.log('\r')
-    console.log('********data start********');
-    console.log(data.toString());
-    console.log('********data end********');
-    console.log('\r')
-    client.end();
-});
-client.on('end', () => {
-    console.log('********disconnected from server********');
-});
-client.on('error', err => {
-    console.log(err);
-    client.end();
-}); */

@@ -1,31 +1,16 @@
-function match(string) {
+// 参考文章
+
+/**
+ * 
+ * @param {*} pattern 
+ * @param {*} string 
+ */
+function match(pattern, string) {
     let state = start;
-    for (item in string) {
+    for (let item of string) {
         state = state(item);
     }
-    return state === end;
+    return state == end;
 }
-
-function start(item) {
-    if (item === 'a')
-        return foundA;
-    else
-        return start;
-}
-
-function foundA(item) {
-    if (item === 'b')
-        return foundB;
-    else
-        return start;
-}
-
-function foundB(item) {
-    if (item === 'c')
-        return end;
-    else
-        return start;
-}
-function end() {
-    return end;
-}
+match('ababx','i am ababx yeah');
+match('groot', 'i am groot');
