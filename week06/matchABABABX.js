@@ -7,38 +7,38 @@ function match(string) {
 }
 
 function start(item) {
-    if (item == 'a') return foundB;
+    if (item == 'a') return foundA;
+    else return start;
+}
+
+function foundA(item) {
+    if (item == 'b') return foundB;
     else return start;
 }
 
 function foundB(item) {
-    if (item == 'b') return foundA2;
+    if (item == 'a') return foundA2;
     else return start;
 }
 
 function foundA2(item) {
-    if (item == 'a') return foundB2;
+    if (item == 'b') return foundB2;
     else return start;
 }
 
 function foundB2(item) {
-    if (item == 'b') return foundA3;
+    if (item == 'a') return foundA3;
     else return start;
 }
 
 function foundA3(item) {
-    if (item == 'a') return foundB3;
+    if (item == 'b') return foundB3;
     else return start;
 }
 
 function foundB3(item) {
-    if (item == 'b') return foundX;
-    else return start;
-}
-
-function foundX(item) {
     if (item == 'x') return end;
-    else return foundA3(item);
+    else return foundB2(item);
 }
 
 function end(item) {

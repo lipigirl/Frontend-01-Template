@@ -7,33 +7,33 @@ function match(string) {
 }
 
 function start(item) {
-    if (item == 'a') return foundB;
-    else return start;
-}
-
-function foundB(item) {
-    if (item == 'b') return foundC;
-    else return start;
-}
-
-function foundC(item) {
-    if (item == 'c') return foundA;
+    if (item == 'a') return foundA;
     else return start;
 }
 
 function foundA(item) {
-    if (item == 'a') return foundB2;
+    if (item == 'b') return foundB;
+    else return start;
+}
+
+function foundB(item) {
+    if (item == 'c') return foundC;
+    else return start;
+}
+
+function foundC(item) {
+    if (item == 'a') return foundA2;
+    else return start;
+}
+
+function foundA2(item) {
+    if (item == 'b') return foundB2;
     else return start;
 }
 
 function foundB2(item) {
-    if (item == 'b') return foundX;
-    else return start;
-}
-
-function foundX(item) {
     if (item == 'x') return end;
-    else return foundC(item);
+    else return foundB(item);
 }
 
 function end(item) {

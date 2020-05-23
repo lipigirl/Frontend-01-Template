@@ -1,7 +1,3 @@
-const css = require("css");
-
-const EOF = Symbol('EOF');//end of file
-
 /**
  * 用FSM（有限状态机）实现HTML的分析
  * 在HTML标准中，已经规定了HTML的状态
@@ -31,149 +27,6 @@ let stack = [{
     children: []
 }];
 
-let rules = [];
-/**
- * 调用css parser来分析css规则
- * @param {*} text 
- */
-function addCSSRules(text) {
-    let ast = css.parse(text);
-    // console.log(JSON.stringify(ast, null, 4));//把 JavaScript 对象转换为字符串。使用4个空格缩进
-    rules.push(...ast.stylesheet.rules);
-}
-
-function match(element, selector) {
-    if (!selector || !element.attributes) {
-        return false;
-    }
-
-    // id选择器
-    if (selector.charAt(0) == "#") {
-        let attr = element.attributes.filter(({ name }) => {
-            return name === "id"
-        })[0];
-        if (attr && attr.value === selector.replace("#", "")) {
-            return true;
-        }
-    }
-    // class选择器
-    else if (selector.charAt(0) == ".") {
-        let attr = element.attributes.filter(({ value }) => value === "class")[0];
-        if (attr && attr.value === selector.replace(".", "")) {
-            return true;
-        }
-    }
-    // 标签选择器
-    else {
-        if (element.tagName === selector) {
-            return true;
-        }
-    }
-    return false;
-}
-
-/**
- * 优先级
- * specificity指定的具体的程度
- * @param {*} selector 
- */
-function specificity(selector) {
-    // 内嵌，标签，class选择器，id选择器
-    let p = [0, 0, 0, 0];//四元组 0表示高位，左高右低，最左为内嵌样式优先级，最高，为0
-    let selectorParts = selector.split(" ");
-    for (let part of selectorParts) {
-        if (part.charAt(0) == "#") {
-            p[1] += 1;
-        } else if (part.charAt(0) == ".") {
-            p[2] += 1;
-        } else {
-            p[3] += 1;
-        }
-    }
-    return p;
-}
-
-function compare(sp1, sp2) {
-    // 从高位开始往低位算，如果高位计算出了就return [0,1,0,2] [0,0,0,3]
-    if (sp1[0] - sp2[0]) {
-        return sp1[0] - sp2[0];
-    }
-    if (sp1[1] - sp2[1]) {
-        return sp1[1] - sp2[1];
-    }
-    if (sp1[2] - sp2[2]) {
-        return sp1[2] - sp2[2];
-    }
-    return sp1[3] - sp2[3];
-}
-
-/**
- * 根据rules element 进行计算
- * computeCSS必然造成重排，重排一定会触发重绘
- * @param {*标签} element 
- */
-function computeCSS(element) {
-    // 从栈里获取父元素序列
-    let elements = stack.slice().reverse();
-    if (!element.computedStyle) {
-        element.computedStyle = {};
-    }
-
-    // 每来一个element 都将element与所有rules进行匹配 直到element中的attribute name与rule中的标签相等 才算匹配到了
-    for (let rule of rules) {
-        // selectors="body div img"
-        let selectorParts = rule.selectors[0].split(" ").reverse();
-        // selectorParts[0]为当前元素
-        if (!match(element, selectorParts[0])) {
-            continue;//进行下一条规则
-        }
-
-        let matched = false;
-
-        // i表示每一个element
-        // j表示每一个selector
-        // 若element和selector匹配，selector往外层走一层，寻找#myid外能与div选择器对应的element，找到后再往外移动一层
-        let j = 1;
-        for (let i = 0; i < elements.length; i++) {
-            if (match(elements[i], selectorParts[j])) {
-                j++;
-            }
-        }
-        // 已遍历完所有当前rule的所有selector
-        if (j >= selectorParts.length) {
-            matched = true;
-        }
-        if (matched) {
-            // 计算rule规则中selector的优先级 例如body div img sp=[0,0,0,3]
-            let sp = specificity(rule.selectors[0]);
-            // 匹配成功，加入规则，反之不做操作
-            let computedStyle = element.computedStyle;
-
-            // declarations声明 例如width:30px
-            for (let item of rule.declarations) {
-                if (!computedStyle[item.property]) {//比如//width属性
-                    computedStyle[item.property] = {}
-                }
-
-                if (!computedStyle[item.property].specificity) {
-                    computedStyle[item.property].value = item.value;
-                    computedStyle[item.property].specificity = sp;
-                }
-                else if (compare(sp, computedStyle[item.property].specificity) > 0) {
-                    computedStyle[item.property].value = item.value;
-                    computedStyle[item.property].specificity = sp;
-                }
-            }
-        }
-    }
-
-    // 针对inline style
-    /* let inlineStyle = element.attributes.filter(p => p.name == "style");
-    parse("{" + inlineStyle + "}")
-    sp = [1, 0, 0, 0]
-    for (let item of sp) { } */
-
-}
 /**
  * 从标签构建DOM树的基本技巧是使用栈
  * 遇到开始标签时创建元素并入栈，遇到结束标签时出栈
@@ -187,6 +40,7 @@ function computeCSS(element) {
  * 遇到 tag end 就出栈一个节点。
  */
 function emit(token) {
+    // console.log(token);
 
     let top = stack[stack.length - 1];//后进先出
 
@@ -207,9 +61,6 @@ function emit(token) {
             }
         }
 
-        // ++++++++++++element创建后立即compute css++++++++++++
-        computeCSS(element);
-
         top.children.push(element);
 
         if (!token.isSelfClosing) {
@@ -218,20 +69,14 @@ function emit(token) {
 
         currentTextNode = null;
 
-    }
-    else if (token.type == "endTag") {
+    } else if (!token.type == "endTag") {
         if (top.tagName != token.tagName) {
             throw new Error("Tag start end doesn't match!");
         } else {
-            // ++++++++++++遇到style标签时，把CSS规则保存起来++++++++++++
-            if (top.tagName == "style") {
-                addCSSRules(top.children[0].content);//???
-            }
             stack.pop();
         }
         currentTextNode = null;
-    }
-    else if (token.type == 'text') {
+    } else if (token.type == 'text') {
         if (currentTextNode == null) {
             currentTextNode = {
                 type: "text",
@@ -242,6 +87,8 @@ function emit(token) {
         currentTextNode.content += token.content;
     }
 }
+
+const EOF = Symbol('EOF');//end of file
 
 /**
  * 初始状态
@@ -455,7 +302,7 @@ function selftClosingStartTag(item) {
 function endTagOpen(item) {
     if (item.match(/^[a-zA-Z]$/)) {
         currentToken = {
-            type: "endTag",
+            type: "endTag ",
             tagName: ""
         }
         return tagName(item);
