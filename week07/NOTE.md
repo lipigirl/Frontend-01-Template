@@ -1,10 +1,6 @@
-* charset
-    * 定义@charset <charset>;
-    * 如：@charset "utf-8";
-* import
-* rules
-    * media
-        * 针对不同的媒体类型定义不同的样式
-    * page
-        * page规则可以对打印进行更多的设置，比如指定页面的尺寸。页边距,页眉页脚等，以求达到更好的效果。
-    * rule
+
+* 浏览器作业注意事项
+
+    * c1元素未设置宽度，当循环计算flex子项位置时itemStyle[mainSize]为空，将导致itemStyle[mainEnd]结果为NaN；
+
+    * server.js中html代码段的rgb颜色注意不要有空格
