@@ -2,6 +2,10 @@
 
 <head>
     <script>
+        // 获取所有 li dom 节点
+        const list = document.getElementById("container").children;
+        console.log('list', list);
+
         const standards = [
             [
                 {
@@ -559,6 +563,7 @@
             ]
         ];
 
+        // 收集 CSS 属性相关标准
         let iframe = document.createElement("iframe");
         document.body.innerHTML = "";
         document.body.appendChild(iframe);
