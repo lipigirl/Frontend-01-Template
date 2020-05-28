@@ -1,0 +1,45 @@
+<html>
+
+<head>
+    <style>
+        /* 内联 id class 标签 */
+        /* 选择器优先级和顺序无关 */
+        /* 0131 */
+        /* div#a.b .c[id=x] {
+            color: blue
+        } */
+
+        /* 0200 not不参与优先级计算 */
+        /* #a:not(#b) {
+            color: red;
+        }
+
+        #a #x {
+            color: black;
+        } */
+
+        /* 0011 */
+        /* div.a {
+            color: red
+        } */
+
+        /* 0010 */
+        /* *.a {
+            color: orange
+        } */
+        
+        * div {
+            color: orchid;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="a" class="b">
+        <div class="c d" id="x">hello pig</div>
+        <div class="a">hi</div>
+        <div class="a">hello</div>
+    </div>
+</body>
+
+</html>
