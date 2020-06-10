@@ -1,0 +1,41 @@
+<html>
+
+<head>
+    <style>
+        .container {
+            width: 300px;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .block {
+            width: 100px;
+            height: 100px;
+            text-align: center;
+            vertical-align: middle;
+            line-height: 100px;
+            background-color: royalblue;
+            outline: 1px solid rgb(0, 0, 0);
+        }
+
+        .container:nth-child(3n+1) {
+            background-color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="block">1</div>
+        <div class="block">2</div>
+        <div class="block">3</div>
+        <div class="block">4</div>
+        <div class="block">5</div>
+        <div class="block">6</div>
+        <div class="block">7</div>
+        <div class="block">8</div>
+        <div class="block">9</div>
+    </div>
+</body>
+
+</html>
