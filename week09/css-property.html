@@ -1,0 +1,98 @@
+<html>
+
+<head>
+    <title>css property</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <!-- <style>
+        .card-header span.badge {
+            float: right;
+        }
+    </style> -->
+</head>
+
+<body>
+    <h1 class="p-2 bg-primary text-white text-center">CSS Properties&nbsp;<span class="badge badge-secondary"
+            id="totalPropsNum"></span></h1>
+    <div class="container-fluid d-flex">
+        <section class="col-3">
+            <div class="card">
+                <div class="card-header">
+                    Layout<span class="badge badge-secondary" id="layoutNum"></span>
+                </div>
+                <div class="card-body p-0">
+                    <ul class="list-group" id="layout"></ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="col-3">
+            <div class="card">
+                <div class="card-header">
+                    Interactive<span class="badge badge-secondary" id="interactiveNum"></span>
+                </div>
+                <div class="card-body p-0">
+                    <ul class="list-group" id="interactive"> </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="col-3">
+            <div class="card">
+                <div class="card-header">
+                    Rendering<span class="badge badge-secondary" id="renderingNum"></span>
+                </div>
+                <div class="card-body p-0">
+                    <ul class="list-group" id="rendering"></ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="col-3">
+            <div class="card">
+                <div class="card-header">
+                    SVG<span class="badge badge-secondary" id="svgNum"></span>
+                </div>
+                <div class="card-body p-0">
+                    <ul class="list-group" id="svg"> </ul>
+                </div>
+            </div>
+        </section>
+    </div>
+
+</body>
+<script>
+    window.onload = () => {
+        const totalPropsNum = getComputedStyle(document.body).length;
+        console.log(getComputedStyle(document.body));
+        const layoutProps = {
+            background: {
+                'background-attachment': '',
+                'background-blend-mode': '',
+                'background-clip': '',
+                'background-color': '',
+                'background-image': '',
+                'background-origin': '',
+                'background-position': '',
+                'background-repeat': '',
+                'background-size': '',
+            }
+        }
+        const interactiveProps = {
+            animation: {
+                'animation-delay': '延迟',
+                'animation-direction': '动画方向',
+                'animation-duration': '',
+                'animation-fill-mode': '',
+                'animation-iteration-count': '',
+                'animation-name': '',
+                'animation-play-state': '',
+                'animation-timing-function': '',
+            }
+        }
+        const renderingProps = {}
+        const svgProps = {}
+    }
+</script>
+
+</html>
