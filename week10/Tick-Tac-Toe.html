@@ -1,0 +1,173 @@
+<html>
+
+<head>
+    <style>
+        #board {
+            width: 350px;
+        }
+
+        .cell {
+            display: inline-block;
+            width: 100px;
+            height: 100px;
+            border: 1px solid #fff;
+            background-color: green;
+            vertical-align: middle;
+            text-align: center;
+            line-height: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="board"></div>
+</body>
+<script>
+    let pattern = [
+        [0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0],
+    ]
+
+    let type = 1;
+
+    let over = false;
+
+    function show(pattern) {
+        let board = document.getElementById("board");
+        board.innerHTML = "";
+        for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 3; j++) {
+                let cell = document.createElement("div");
+
+                cell.classList.add("cell");
+
+                // 连续多个三目运算
+                cell.innerHTML =
+                    pattern[i][j] == 2 ? "❌" :
+                    pattern[i][j] == 1 ? "⭕️" :
+                    "";
+                cell.addEventListener("click", () => move(j, i));
+                board.appendChild(cell);
+            }
+        }
+    }
+
+    function move(x, y) {
+        if (over) return;
+        if (pattern[y][x]) return;
+        // 轮流落子
+        type = 3 - type;
+        pattern[y][x] = type;
+        show(pattern);
+
+        if (willWin(pattern, type)) {
+            console.log(`${["","⭕️","❌"][type]} will win!`)
+        }
+
+        if (check(pattern, type)) {
+            alert(`${["","⭕️","❌"][type]} is win!`);
+            over = true;
+        }
+    }
+
+    function check(pattern, type, x, y) {
+        for (let i = 0; i < 3; i++) {
+            let win = true;
+            for (let j = 0; j < 3; j++) {
+                if (pattern[i][j] != type) {
+                    win = false;
+                    break;
+                }
+            }
+            if (win) return true;
+
+            win = true;
+            for (let j = 0; j < 3; j++) {
+                if (pattern[j][i] != type) {
+                    win = false;
+                    break;
+                }
+            }
+            if (win) return true;
+
+            win = true;
+            for (let j = 0; j < 3; j++) {
+                if (pattern[j][2 - j] != type) {
+                    win = false;
+                    break;
+                }
+            }
+            if (win) return true;
+
+            win = true;
+            for (let j = 0; j < 3; j++) {
+                if (pattern[2 - j][j] != type) {
+                    win = false;
+                    break;
+                }
+            }
+            if (win) return true;
+        }
+        return false;
+    }
+
+    function willWin(pattern, type) {
+        for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 3; j++) {
+                if (pattern[i][j]) {
+                    continue;
+                }
+                let tmp = clone(pattern);
+                tmp[i][j] = type;
+                if (check(tmp, type)) {
+                    return [i, j];
+                }
+            }
+        }
+        return false;
+    }
+
+    function clone(pattern) {
+        return JSON.parse(JSON.stringify(pattern))
+    }
+
+    function bestChoice(pattern, type) {
+        let point = willWin(pattern, type);
+        if (point) {
+            return {
+                point: point,
+                result: 1 //1 win, 0 ping, -1 lose
+            }
+        }
+
+        let result = -1;
+        outer: for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 3; j++) {
+                if (pattern[i][j]) {
+                    continue;
+                }
+                let tmp = clone(pattern);
+                tmp[i][j] = type;
+                let opp = bestChoice(tmp, 3 - type);
+                // 对手最坏的情况 -opp.result
+                if (-opp.result >= result) {
+                    point = [j][i];
+                    result = -opp.result
+                }
+                if (result == 1) {
+                    break outer;
+                }
+            }
+        }
+
+        return {
+            point,
+            result: point ? result : 0
+        }
+    }
+
+    show(pattern)
+</script>
+
+</html>
