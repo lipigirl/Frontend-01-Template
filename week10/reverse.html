@@ -2,41 +2,39 @@
 
 <head>
     <style>
-        .a::before {
-            content: 'hello';
-        }
 
-        .a {
-            font-size: 26px;
-            color: red;
-        }
-
-        .b {
-            margin-top: 20px;
-            font-size: 26px;
-            color: pink;
-        }
     </style>
 </head>
 
 <body>
-    <div class="a">
-        0 123456789
-    </div>
-    <div class="b">
-        asdfghjklzxcvbn
+    <div id="a">
+        <span>1</span>
+        <p>2</p>
+        <a>3</a>
+        <div>4</div>
     </div>
 </body>
 
-<!-- <script>
-        let element=document.getElementsByClassName('a')[0];
-        let child=element.childNodes[0];
-        console.log(child.length)
-        let range=new Range();
-        console.log(range)
-        range.setStart(child , 0);
-        range.setEnd(child , 9);
-       
-    </script> -->
+<script>
+    let element = document.getElementById('a');
+
+    function reverseChildren(element) {
+        let range = new Range();
+        // 使 range 包含element的内容。
+        range.selectNodeContents(element);
+
+        // 把 range 的内容从文档树移动到一个文档片段中。
+        let fragment = range.extractContents();
+        let len = fragment.childNodes.length;
+        while (len-- > 0) {
+            console.log(fragment.childNodes[len])
+            fragment.appendChild(fragment.childNodes[len]);
+        }
+        console.log(fragment);
+        element.appendChild(fragment)
+    }
+
+    reverseChildren(element);
+</script>
 
 </html>
