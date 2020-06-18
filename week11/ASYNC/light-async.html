@@ -1,0 +1,120 @@
+<html>
+
+<head>
+    <style>
+        .container {
+            height: 500px;
+            text-align: center;
+            background-color: #000;
+        }
+
+        .light {
+            display: inline-block;
+            margin: 20px;
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            background-color: gray;
+        }
+
+        .red.on {
+            background-color: red;
+        }
+
+        .yellow.on {
+            background-color: yellow;
+        }
+
+        .green.on {
+            background-color: green;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="light green"></div>
+        <div class="light yellow"></div>
+        <div class="light red"></div>
+    </div>
+    <script>
+        function red() {
+            let lights = document.getElementsByClassName("light");
+            for (let i = 0; i < 3; i++) {
+                lights[i].classList.remove("on");
+            }
+            document.getElementsByClassName("red")[0].classList.add("on");
+        }
+
+        function yellow() {
+            let lights = document.getElementsByClassName("light");
+            for (let i = 0; i < 3; i++) {
+                lights[i].classList.remove("on");
+            }
+            document.getElementsByClassName("yellow")[0].classList.add("on");
+        }
+
+        function green() {
+            let lights = document.getElementsByClassName("light");
+            for (let i = 0; i < 3; i++) {
+                lights[i].classList.remove("on");
+            }
+            document.getElementsByClassName("green")[0].classList.add("on");
+        }
+
+        function wait(t) {
+            return new Promise((resolve, reject) => {
+                setTimeout(resolve, t)
+            })
+        }
+
+        /* function go() {
+            green();
+            // setTimeout(() => {
+            //     yellow();
+            //     setTimeout(() => {
+            //         red();
+            //         setTimeout(go, 1000)
+            //     }, 1000)
+            // }, 1000);
+            wait(1000).then(() => {
+                yellow();
+                return wait(1000);
+            }).then(() => {
+                red();
+                return wait(1000);
+            }).then(go);
+        }
+        go(); */
+
+        /* async function go() {
+            green();
+            wait(1000).then(() => {
+                yellow();
+                return wait(1000);
+            }).then(() => {
+                red();
+                return wait(1000);
+            }).then(go);
+        }
+        go(); */
+
+        // 1.await后面接一个会return new promise的函数并执行它
+        // 2.await只能放在async函数里
+
+        async function go() {
+            while (true) {
+                green();
+                await wait(1000);
+                yellow();
+                await wait(1000);
+                red();
+                await wait(1000);
+                //若不设置最后一行的await 红绿灯将直接从红色跳到绿色 因为速度太快 视觉上没有察觉到红灯的显示
+            }
+        }
+        go();
+    </script>
+</body>
+
+</html>

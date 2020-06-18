@@ -1,0 +1,92 @@
+<html>
+
+<head>
+    <style>
+        .container {
+            height: 500px;
+            text-align: center;
+            background-color: #000;
+        }
+
+        .light {
+            display: inline-block;
+            margin: 20px;
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            background-color: gray;
+        }
+
+        .red.on {
+            background-color: red;
+        }
+
+        .yellow.on {
+            background-color: yellow;
+        }
+
+        .green.on {
+            background-color: green;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="light green"></div>
+        <div class="light yellow"></div>
+        <div class="light red"></div>
+    </div>
+    <script>
+        function red() {
+            let lights = document.getElementsByClassName("light");
+            for (let i = 0; i < 3; i++) {
+                lights[i].classList.remove("on");
+            }
+            document.getElementsByClassName("red")[0].classList.add("on");
+        }
+
+        function yellow() {
+            let lights = document.getElementsByClassName("light");
+            for (let i = 0; i < 3; i++) {
+                lights[i].classList.remove("on");
+            }
+            document.getElementsByClassName("yellow")[0].classList.add("on");
+        }
+
+        function green() {
+            let lights = document.getElementsByClassName("light");
+            for (let i = 0; i < 3; i++) {
+                lights[i].classList.remove("on");
+            }
+            document.getElementsByClassName("green")[0].classList.add("on");
+        }
+
+        function wait(t) {
+            return new Promise((resolve, reject) => {
+                setTimeout(resolve, t)
+            })
+        }
+
+        function go() {
+            green();
+            // setTimeout(() => {
+            //     yellow();
+            //     setTimeout(() => {
+            //         red();
+            //         setTimeout(go, 1000)
+            //     }, 1000)
+            // }, 1000);
+            wait(1000).then(() => {
+                yellow();
+                return wait(1000);
+            }).then(() => {
+                red();
+                return wait(1000);
+            }).then(go);
+        }
+        go()
+    </script>
+</body>
+
+</html>
