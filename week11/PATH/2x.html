@@ -41,22 +41,6 @@
             container.appendChild(cell)
         }
     }
-    // for (let y = 0; y < 10000; y++) {
-    //     let cell = document.createElement("div");
-    //     cell.classList.add("cell");
-    //     cell.addEventListener('mousemove', () => {
-    //         if (mouse) {
-    //             if (clear) {
-    //                 cell.style.backgroundColor = "";
-    //                 map[y * 100] = 0;
-    //             } else {
-    //                 cell.style.backgroundColor = "#000"; //触发非高频率，有时会丢失
-    //                 map[y * 100] = 1;
-    //             }
-    //         }
-    //     })
-    //     container.appendChild(cell)
-    // }
 
     document.addEventListener('mousedown', e => {
         mouse = true;
@@ -67,4 +51,33 @@
     })
     // 阻止鼠标右击事件
     document.addEventListener('contextmenu', e => e.preventDefault())
+
+    function findPath(map, start, end) {
+        map = map.slice(); //防止map污染
+
+        let queue = [start];
+
+        function insert(x, y) {
+            if (map[100 * y + x] !== 0)
+                return; //位置不为空return
+            if (x < 0 || y < 0 || x >= 100 || y >= 100)
+                return; //超出边界return
+            map[100 * y + x] = 2;
+            container.children[100 * y + x].style.backgroundColor = "red";
+            queue.push([x, y]);
+        }
+
+        console.log(queue)
+        while (queue.length) {
+            let [x, y] = queue.shift(); //popo unshift / push shift
+            console.log(x, y);
+            if (x === end[0] && y === end[1])
+                return true;
+            insert(x - 1, y);
+            insert(x, y - 1);
+            insert(x + 1, y);
+            insert(x, y + 1);
+        }
+        return false;
+    }
 </script>
