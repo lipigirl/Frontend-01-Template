@@ -1,83 +1,63 @@
-<style>
-    #container {
-        width: 901px;
-    }
-
-    .cell {
-        display: inline-block;
-        width: 6px;
-        height: 6px;
-        background-color: gray;
-        border: 1px solid #fff;
-    }
-</style>
-
-<div id="container"></div>
-<button onclick="localStorage.map=JSON.stringify(map)">save</button>
 <script>
-    let mouse = false;
-    let clear = false;
+    class GamePath {
+        constructor(map, Collection) {
+            this.map = map;
+            this.Collection = Collection;
+        }
 
-    let map = localStorage.map ? JSON.parse(localStorage.map) : new Array(10000).fill(0);
-    let container = document.getElementById("container");
-    for (let y = 0; y < 100; y++) {
-        for (let x = 0; x < 100; x++) {
-            let cell = document.createElement("div");
-            cell.classList.add("cell");
-            if (map[y * 100 + x] === 1) {
-                cell.style.backgroundColor = "#000";
-            }
-            cell.addEventListener('mousemove', () => {
-                if (mouse) {
-                    if (clear) {
-                        cell.style.backgroundColor = "";
-                        map[y * 100 + x] = 0;
-                    } else {
-                        cell.style.backgroundColor = "#000"; //触发非高频率，有时会丢失
-                        map[y * 100 + x] = 1;
-                    }
+        distance([x, y], end) {
+            return (x - end[0]) ** 2 + (y - end[1]) ** 2;
+        }
+
+        async find(start, end) {
+            let map = this.map.slice();
+
+            let collection = new this.Collection([start], (a, b) => (this.distance(a, end) - this.distance(b,
+            end)));
+
+            container.children[end[1] * 100 + end[0]].classList.add('red');
+
+            async function insert([x, y], pre) {
+                if (map[y * 100 + x] !== 0) {
+                    return;
                 }
-            })
-            container.appendChild(cell)
+                if (x < 0 || y < 0 || x >= 100 || y >= 100) {
+                    return;
+                }
+                map[y * 100 + x] = pre;
+                container.children[y * 100 + x].classList.add('lightgreen');
+
+                await sleep(1);
+                collection.insert([x, y]);
+            }
+
+            while (collection.length > 0) {
+                let [x, y] = collection.take();
+
+                if (x === end[0] && y === end[1]) {
+                    let path = [];
+                    while (x !== start[0] || y !== start[1]) {
+                        path.push([x, y]);
+                        container.children[y * 100 + x].classList.add('pink');
+
+                        [x, y] = map[y * 100 + x];
+                    }
+                    container.children[start[1] * 100 + start[0]].classList.add('pink');
+
+                    return path;
+                }
+
+                await insert([x - 1, y], [x, y]);
+                await insert([x + 1, y], [x, y]);
+                await insert([x, y - 1], [x, y]);
+                await insert([x, y + 1], [x, y]);
+
+                await insert([x - 1, y - 1], [x, y]);
+                await insert([x + 1, y - 1], [x, y]);
+                await insert([x - 1, y + 1], [x, y]);
+                await insert([x + 1, y + 1], [x, y]);
+            }
+            return null;
         }
-    }
-
-    document.addEventListener('mousedown', e => {
-        mouse = true;
-        clear = (e.which === 3);
-    })
-    document.addEventListener('mouseup', () => {
-        mouse = false;
-    })
-    // 阻止鼠标右击事件
-    document.addEventListener('contextmenu', e => e.preventDefault())
-
-    function findPath(map, start, end) {
-        map = map.slice(); //防止map污染
-
-        let queue = [start];
-
-        function insert(x, y) {
-            if (map[100 * y + x] !== 0)
-                return; //位置不为空return
-            if (x < 0 || y < 0 || x >= 100 || y >= 100)
-                return; //超出边界return
-            map[100 * y + x] = 2;
-            container.children[100 * y + x].style.backgroundColor = "red";
-            queue.push([x, y]);
-        }
-
-        console.log(queue)
-        while (queue.length) {
-            let [x, y] = queue.shift(); //popo unshift / push shift
-            console.log(x, y);
-            if (x === end[0] && y === end[1])
-                return true;
-            insert(x - 1, y);
-            insert(x, y - 1);
-            insert(x + 1, y);
-            insert(x, y + 1);
-        }
-        return false;
     }
 </script>

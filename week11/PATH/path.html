@@ -41,30 +41,53 @@
             container.appendChild(cell)
         }
     }
-    // for (let y = 0; y < 10000; y++) {
-    //     let cell = document.createElement("div");
-    //     cell.classList.add("cell");
-    //     cell.addEventListener('mousemove', () => {
-    //         if (mouse) {
-    //             if (clear) {
-    //                 cell.style.backgroundColor = "";
-    //                 map[y * 100] = 0;
-    //             } else {
-    //                 cell.style.backgroundColor = "#000"; //触发非高频率，有时会丢失
-    //                 map[y * 100] = 1;
-    //             }
-    //         }
-    //     })
-    //     container.appendChild(cell)
-    // }
 
     document.addEventListener('mousedown', e => {
         mouse = true;
-        clear = (e.which === 3);
+        clear = (e.which === 3); //右键事件
     })
     document.addEventListener('mouseup', () => {
         mouse = false;
     })
     // 阻止鼠标右击事件
     document.addEventListener('contextmenu', e => e.preventDefault())
+
+    async function findPath(map, start, end) {
+        map = map.slice(); //防止污染原map
+
+        // 初始化队列
+        let queue = [start];
+
+        async function insert(x, y) {
+            //有障碍 return
+            if (map[100 * y + x] !== 0)
+                return;
+            //超出边界 return
+            if (x < 0 || y < 0 || x >= 100 || y >= 100)
+                return;
+            map[100 * y + x] = 2;
+            container.children[100 * y + x].style.backgroundColor = "lightgreen";
+            await sleep(5);
+            queue.push([x, y]);
+        }
+
+        while (queue.length) {
+            //popo unshift / push shift
+            let [x, y] = queue.shift();
+            console.log(x, y);
+            if (x === end[0] && y === end[1])
+                return true;
+            await insert(x - 1, y);
+            await insert(x + 1, y);
+            await insert(x, y - 1);
+            await insert(x, y + 1);
+        }
+        return false;
+    }
+
+    function sleep(t) {
+        return new Promise((resolve) => {
+            setTimeout(resolve, t)
+        })
+    }
 </script>
