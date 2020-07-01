@@ -68,24 +68,21 @@
             })
         }
 
-        function go() {
-            green();
-            // setTimeout(() => {
-            //     yellow();
-            //     setTimeout(() => {
-            //         red();
-            //         setTimeout(go, 1000)
-            //     }, 1000)
-            // }, 1000);
-            wait(1000).then(() => {
+        // 1.await后面接一个会return new promise的函数并执行它
+        // 2.await只能放在async函数里
+
+        async function go() {
+            while (true) {
+                green();
+                await wait(1000);
                 yellow();
-                return wait(1000);
-            }).then(() => {
+                await wait(1000);
                 red();
-                return wait(1000);
-            }).then(go);
+                await wait(1000);
+                //若不设置最后一行的await 红绿灯将直接从红色跳到绿色 因为速度太快 视觉上没有察觉到红灯的显示
+            }
         }
-        go()
+        go();
     </script>
 </body>
 

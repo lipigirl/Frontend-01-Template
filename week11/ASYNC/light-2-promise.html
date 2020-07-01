@@ -62,58 +62,49 @@
             document.getElementsByClassName("green")[0].classList.add("on");
         }
 
-        function wait(t) {
+        function sleep(t) {
             return new Promise((resolve, reject) => {
                 setTimeout(resolve, t)
             })
         }
 
-        /* function go() {
+        function go() {
             green();
-            // setTimeout(() => {
-            //     yellow();
-            //     setTimeout(() => {
-            //         red();
-            //         setTimeout(go, 1000)
-            //     }, 1000)
-            // }, 1000);
-            wait(1000).then(() => {
+
+            /* setTimeout(() => {
                 yellow();
-                return wait(1000);
+                setTimeout(() => {
+                    red();
+                    setTimeout(go, 1000)
+                }, 1000)
+            }, 1000); */
+
+            /* new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    resolve(yellow());
+                }, 1000)
+            }).then(() => {
+                return new Promise(resolve => {
+                    setTimeout(() => {
+                        resolve(red());
+                    }, 1000)
+                })
+            }).then(() => {
+                setTimeout(() => {
+                    go();
+                }, 1000)
+            }); */
+
+            sleep(1000).then(() => {
+                yellow();
+                return sleep(1000);
             }).then(() => {
                 red();
-                return wait(1000);
+                return sleep(1000);
             }).then(go);
-        }
-        go(); */
 
-        /* async function go() {
-            green();
-            wait(1000).then(() => {
-                yellow();
-                return wait(1000);
-            }).then(() => {
-                red();
-                return wait(1000);
-            }).then(go);
         }
-        go(); */
-
-        // 1.await后面接一个会return new promise的函数并执行它
-        // 2.await只能放在async函数里
-
-        async function go() {
-            while (true) {
-                green();
-                await wait(1000);
-                yellow();
-                await wait(1000);
-                red();
-                await wait(1000);
-                //若不设置最后一行的await 红绿灯将直接从红色跳到绿色 因为速度太快 视觉上没有察觉到红灯的显示
-            }
-        }
-        go();
+        go()
     </script>
 </body>
 
